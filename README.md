@@ -252,5 +252,5 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ---
 
 <p align="center">
-  Made with ❤️ by <a href="https://github.com/YOUR_USERNAME">YOUR_USERNAME</a>
+  Made with ❤️ by <a href="https://github.com/GhuffraanAsghar">Ghuffraan Asghar</a>
 </p>
