@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-iOS%2013%2B%20%7C%20macOS%2010.15%2B-blue.svg" alt="Platform">
-  <img src="https://img.shields.io/badge/Swift-5.9%2B-orange.svg" alt="Swift">
+  <img src="https://img.shields.io/badge/Swift-5.5%2B-orange.svg" alt="Swift">
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
   <img src="https://img.shields.io/badge/SPM-Compatible-brightgreen.svg" alt="SPM">
 </p>
@@ -20,7 +20,7 @@
 - ⚡ **Async Support** - Modern Swift concurrency with progress tracking
 - 🎚️ **Flexible Compression** - Low, Medium, High, or Custom levels
 - 📊 **Progress Callbacks** - Real-time compression progress updates
-- 🧵 **Thread Safe** - Built with `Sendable` conformance
+- 🧵 **Thread Safe** - Safe for use across multiple threads
 - 💾 **Multiple Input Sources** - Compress from URL, Data, or PDFDocument
 
 ---
@@ -34,7 +34,7 @@ Add **PDFCompressorKit** to your project using Xcode:
 1. Go to **File → Add Package Dependencies**
 2. Enter the repository URL:
    ```
-   https://github.com/GhuffraanAsghar/PDFCompressorKit.git
+   https://github.com/YOUR_USERNAME/PDFCompressorKit.git
    ```
 3. Select version **1.0.0** or later
 
@@ -234,8 +234,8 @@ struct ContentView: View {
 
 - **iOS** 13.0+
 - **macOS** 10.15+
-- **Swift** 5.9+
-- **Xcode** 15.0+
+- **Swift** 5.5+
+- **Xcode** 13.0+
 
 ---
 
@@ -252,5 +252,5 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ---
 
 <p align="center">
-  Made with ❤️ by <a href="https://github.com/GhuffraanAsghar">Ghuffraan Asghar.</a>
+  Made with ❤️ by <a href="https://github.com/GhuffraanAsghar">GhuffraanAsghar</a>
 </p>
