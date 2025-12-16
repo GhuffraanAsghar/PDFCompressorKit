@@ -34,7 +34,7 @@ Add **PDFCompressorKit** to your project using Xcode:
 1. Go to **File → Add Package Dependencies**
 2. Enter the repository URL:
    ```
-   https://github.com/YOUR_USERNAME/PDFCompressorKit.git
+   https://github.com/GhuffraanAsghar/PDFCompressorKit.git
    ```
 3. Select version **1.0.0** or later
 
