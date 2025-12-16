@@ -16,7 +16,7 @@ import AppKit
 #endif
 
 /// A PDF compression utility that works on both iOS (UIKit) and macOS (AppKit)
-public final class PDFCompressor: Sendable {
+public final class PDFCompressor {
     
     public init() {}
     
@@ -119,7 +119,7 @@ public final class PDFCompressor: Sendable {
         inputURL: URL,
         outputURL: URL,
         level: CompressionLevel,
-        progress: (@Sendable (Double) -> Void)? = nil
+        progress: ((Double) -> Void)? = nil
     ) async throws {
         guard let sourcePDF = PDFDocument(url: inputURL) else {
             throw PDFCompressorError.invalidPDF
@@ -149,7 +149,7 @@ public final class PDFCompressor: Sendable {
     public func compressAsync(
         document: PDFDocument,
         level: CompressionLevel,
-        progress: (@Sendable (Double) -> Void)? = nil
+        progress: ((Double) -> Void)? = nil
     ) async throws -> Data {
         let pageCount = document.pageCount
         
