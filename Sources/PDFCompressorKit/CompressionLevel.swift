@@ -8,8 +8,7 @@
 import Foundation
 import CoreGraphics
 
-/// Compression levels for PDF compression
-public enum CompressionLevel: Sendable {
+public enum CompressionLevel {
     /// Low compression - high quality, larger file size
     case low
     /// Medium compression - balanced quality and size
