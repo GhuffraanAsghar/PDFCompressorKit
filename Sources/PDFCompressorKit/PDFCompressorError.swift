@@ -8,7 +8,7 @@
 import Foundation
 
 /// Errors that can occur during PDF compression
-public enum PDFCompressorError: Error, LocalizedError, Sendable {
+public enum PDFCompressorError: Error, LocalizedError {
     /// The input PDF is invalid or cannot be read
     case invalidPDF
     /// Cannot create the output file or data consumer
