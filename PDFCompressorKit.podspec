@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "PDFCompressorKit"
-  spec.version      = "0.0.1"
+  spec.version      = "1.2.0"
 
   spec.summary      = "A lightweight Swift library for compressing PDF files on macOS using native Apple frameworks."
 

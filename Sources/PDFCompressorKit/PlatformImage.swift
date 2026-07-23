@@ -8,6 +8,8 @@
 import Foundation
 import PDFKit
 import CoreGraphics
+import AVFoundation
+import UniformTypeIdentifiers
 
 #if canImport(UIKit)
 import UIKit
@@ -67,21 +69,57 @@ public extension PlatformImage {
         #endif
     }
     
-    /// Converts the image to JPEG data with the specified quality (0.0 - 1.0)
-    func jpegData(quality: CGFloat) -> Data? {
+    /// Converts the image to optimized data (HEIC if available, otherwise JPEG) with the specified quality (0.0 - 1.0)
+    func optimizedData(quality: CGFloat) -> Data? {
         #if canImport(UIKit)
-        return self.jpegData(compressionQuality: quality)
+        return createHEICData(quality: quality) ?? self.jpegData(compressionQuality: quality)
         
         #elseif canImport(AppKit)
         guard let tiffData = self.tiffRepresentation,
               let bitmap = NSBitmapImageRep(data: tiffData) else {
             return nil
         }
+        
+        // Try to create HEIC if supported
+        if let heicData = createHEICData(quality: quality) {
+            return heicData
+        }
+        
+        // Fallback to JPEG
         return bitmap.representation(
             using: .jpeg,
             properties: [.compressionFactor: quality]
         )
         #endif
+    }
+    
+    /// Helper to create HEIC data using CGImageDestination
+    private func createHEICData(quality: CGFloat) -> Data? {
+        guard let cgImage = self.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return nil }
+        
+        let data = NSMutableData()
+        let heicUTType = "public.heic" as CFString
+        
+        guard let destination = CGImageDestinationCreateWithData(data, heicUTType, 1, nil) else {
+            return nil
+        }
+        
+        let options: [CFString: Any] = [
+            kCGImageDestinationLossyCompressionQuality: quality
+        ]
+        
+        CGImageDestinationAddImage(destination, cgImage, options as CFDictionary)
+        
+        if CGImageDestinationFinalize(destination) {
+            return data as Data
+        }
+        return nil
+    }
+    
+    /// Backwards compatibility
+    @available(*, deprecated, renamed: "optimizedData")
+    func jpegData(quality: CGFloat) -> Data? {
+        return optimizedData(quality: quality)
     }
     
     /// Returns the size of the image
