@@ -198,26 +198,42 @@ public final class PDFCompressor {
         to context: CGContext,
         level: CompressionLevel
     ) throws {
-        let pageRect = page.bounds(for: .mediaBox)
+        var pageRect = page.bounds(for: .mediaBox)
+        
+        // Smart Text Detection: Check if the page contains selectable text
+        let hasText = !(page.string?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true)
+        
+        if hasText {
+            // If the page contains text, rasterizing it to an image will destroy the vector text quality.
+            // We draw the original vector page to the context to preserve text crispness.
+            context.beginPage(mediaBox: &pageRect)
+            if let pageRef = page.pageRef {
+                context.drawPDFPage(pageRef)
+            }
+            context.endPage()
+            return
+        }
+        
+        // If it's an image-only page (no text), compress it optimally
         
         // Create image from PDF page
         guard let image = PlatformImage.from(pdfPage: page, scale: level.scaleFactor) else {
             throw PDFCompressorError.compressionFailed
         }
         
-        // Compress image to JPEG
-        guard let jpegData = image.jpegData(quality: level.jpegQuality) else {
+        // Compress image to HEIC/JPEG
+        guard let optimizedData = image.optimizedData(quality: level.imageQuality) else {
             throw PDFCompressorError.compressionFailed
         }
         
-        // Create image from JPEG data
+        // Create image from optimized data
         #if canImport(UIKit)
-        guard let compressedImage = UIImage(data: jpegData),
+        guard let compressedImage = UIImage(data: optimizedData),
               let cgImage = compressedImage.cgImage else {
             throw PDFCompressorError.compressionFailed
         }
         #elseif canImport(AppKit)
-        guard let compressedImage = NSImage(data: jpegData),
+        guard let compressedImage = NSImage(data: optimizedData),
               let cgImage = compressedImage.cgImage(
                 forProposedRect: nil,
                 context: nil,
@@ -228,8 +244,7 @@ public final class PDFCompressor {
         #endif
         
         // Draw compressed image to PDF context
-        var box = pageRect
-        context.beginPage(mediaBox: &box)
+        context.beginPage(mediaBox: &pageRect)
         context.draw(cgImage, in: pageRect)
         context.endPage()
     }
@@ -261,6 +276,8 @@ public extension PDFCompressor {
         let estimatedRatio: Double
         
         switch level {
+        case .optimal:
+            estimatedRatio = 0.5
         case .low:
             estimatedRatio = 0.7
         case .medium:
